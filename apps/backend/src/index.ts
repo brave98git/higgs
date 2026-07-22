@@ -3,8 +3,11 @@ import { staticPlugin } from "@elysiajs/static";
 import auth from "../modules/auth/index";
 import video from "../modules/video";
 import avatar from "../modules/avatar";
+import cors from "@elysiajs/cors";
+
 
 const app = new Elysia({ prefix: "/api/v1" })
+ .use(cors())
   .use(
     staticPlugin({
       assets: "assets",
@@ -14,6 +17,6 @@ const app = new Elysia({ prefix: "/api/v1" })
   .use(auth)
   .use(avatar)
   .use(video)
-  .listen(3000, () => {
-    console.log("Server is running on http://localhost:3000");
+  .listen(8000, () => {
+    console.log("Server is running on http://localhost:8000");
   });

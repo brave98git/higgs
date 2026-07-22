@@ -9,7 +9,13 @@ const video = new Elysia({ prefix: "/video" })
     return await videoService.getAllVideos();
   }) // GET /api/v1/videos
   .post("/", async ({ body }) => {
-    return await videoService.createVideo(body.title, body.url);
+    return await videoService.createVideo(
+      body.prompt,
+      body.url,
+      body.duration,
+      body.width,
+      body.height
+    );
   }, {
     body: VideoModel.CreateVideoSchema
   }) // POST /api/v1/video

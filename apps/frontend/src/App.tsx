@@ -4,23 +4,33 @@ import LandingPage from "./pages/LandingPage";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 import Dashboard from "./pages/Dashboard";
+import AvatarCreator from "./pages/AvatarCreator";
+import VideoCreator from "./pages/VideoCreator";
+import ProtectedRoute from "./components/ProtectedRoute";
 import "./index.css";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+const queryClient = new QueryClient();
 
 export function App() {
   return (
-    <BrowserRouter>
-      <div className="min-h-screen bg-neutral-950 text-neutral-100 flex flex-col font-sans antialiased">
-        <AppBar />
-        <main className="flex-1">
-          <Routes>
-            <Route path="/" element={<LandingPage />} />
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/signin" element={<SignIn />} />
-            <Route path="/signup" element={<SignUp />} />
-          </Routes>
-        </main>
-      </div>
-    </BrowserRouter>
+    <QueryClientProvider client={queryClient}>
+      <BrowserRouter>
+        <div className="min-h-screen bg-neutral-950 text-neutral-100 flex flex-col font-sans antialiased">
+          <AppBar />
+          <main className="flex-1">
+            <Routes>
+              <Route path="/" element={<LandingPage />} />
+              <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+              <Route path="/signin" element={<SignIn />} />
+              <Route path="/signup" element={<SignUp />} />
+              <Route path="/avatar" element={<ProtectedRoute><AvatarCreator /></ProtectedRoute>} />
+              <Route path="/video" element={<ProtectedRoute><VideoCreator /></ProtectedRoute>} />
+            </Routes>
+          </main>
+        </div>
+      </BrowserRouter>
+    </QueryClientProvider>
   );
 }
 

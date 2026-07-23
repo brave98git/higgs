@@ -14,7 +14,7 @@ export function LandingPage() {
       <section className="max-w-5xl w-full px-6 pt-20 pb-16 flex flex-col items-center text-center space-y-8 z-10">
         <div className="inline-flex items-center gap-2 px-3 py-1 bg-neutral-900 border border-neutral-800 rounded-full text-xs text-neutral-450 hover:border-neutral-700 transition-colors">
           <Sparkles className="h-3.5 w-3.5 text-[#1D4ED8]" />
-          <span>Higgs v2.0 Avatar Engine is now in Public Beta</span>
+          <span>Higgs v1.0 Avatar Engine is now in Public Beta</span>
         </div>
 
         <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight text-white max-w-4xl leading-tight">

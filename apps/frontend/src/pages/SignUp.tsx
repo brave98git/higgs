@@ -13,45 +13,53 @@ import {
 import { TrainFront } from "lucide-react";
 import { BACKEND_URL } from "@/config";
 import axios from "axios";
+import { useMutation } from "@tanstack/react-query";
+
+async function signup({ username, password }: { username: string; password: string }) {
+  const response = await axios.post(`${BACKEND_URL}/api/v1/signup`, {
+    username,
+    password,
+  });
+  return response.data;
+}
 
 export function SignUp() {
   const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  async function signup(e: React.FormEvent) {
-    e.preventDefault();
-    setLoading(true);
-    setError(null);
-    try {
-      if (username.length < 3 || username.length > 20) {
-        throw new Error("Username must be between 3 and 20 characters.");
-      }
-      if (password.length < 8) {
-        throw new Error("Password must be at least 8 characters long.");
-      }
-      await axios.post(`${BACKEND_URL}/api/v1/signup`, {
-        username,
-        password,
-      });
+  const mutation = useMutation({
+    mutationFn: signup,
+    onSuccess: () => {
       navigate("/signin");
-    } catch (err: any) {
-      console.log(err);
+    },
+    onError: (err: any) => {
       setError(err.response?.data?.error || err.message || "Failed to sign up");
-    } finally {
-      setLoading(false);
-    }
-  }
+    },
+  });
 
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError(null);
+
+    if (username.length < 3 || username.length > 20) {
+      setError("Username must be between 3 and 20 characters.");
+      return;
+    }
+    if (password.length < 8) {
+      setError("Password must be at least 8 characters long.");
+      return;
+    }
+
+    await mutation.mutateAsync({ username, password });
+  };
 
   return (
     <div className="flex flex-col md:flex-row min-h-[calc(100vh-4rem)] bg-neutral-950 font-mono">
-      
+      {/* Left side */}
       <div className="flex w-full flex-col items-center justify-center p-8 text-center md:w-1/2 bg-[#1D4ED8]">
         <div className="flex flex-col items-center justify-center space-y-6 max-w-md">
-          
           <div className="flex h-20 w-20 items-center justify-center rounded-2xl bg-white text-[#1D4ED8] shadow-md">
             <TrainFront className="h-10 w-10" />
           </div>
@@ -61,7 +69,7 @@ export function SignUp() {
         </div>
       </div>
 
-      
+      {/* Right side */}
       <div className="flex w-full items-center justify-center p-8 bg-neutral-950 md:w-1/2">
         <Card className="w-full max-w-md bg-neutral-900 border-neutral-800 text-white p-2">
           <CardHeader className="space-y-1">
@@ -86,12 +94,9 @@ export function SignUp() {
                 {error}
               </div>
             )}
-            <form onSubmit={signup} className="space-y-4">
+            <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-2">
-                <Label
-                  htmlFor="username"
-                  className="text-sm font-semibold text-neutral-300"
-                >
+                <Label htmlFor="username" className="text-sm font-semibold text-neutral-300">
                   Username
                 </Label>
                 <Input
@@ -106,10 +111,7 @@ export function SignUp() {
               </div>
 
               <div className="space-y-2">
-                <Label
-                  htmlFor="password"
-                  className="text-sm font-semibold text-neutral-300"
-                >
+                <Label htmlFor="password" className="text-sm font-semibold text-neutral-300">
                   Password
                 </Label>
                 <Input
@@ -125,10 +127,10 @@ export function SignUp() {
 
               <Button
                 type="submit"
-                disabled={loading}
+                disabled={mutation.isPending}
                 className="w-full bg-[#1D4ED8] text-white font-bold py-3 hover:bg-[#1e40af] transition-colors rounded-md mt-4"
               >
-                {loading ? "Creating Account..." : "Signup"}
+                {mutation.isPending ? "Creating Account..." : "Signup"}
               </Button>
             </form>
           </CardContent>

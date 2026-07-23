@@ -9,12 +9,14 @@ import VideoCreator from "./pages/VideoCreator";
 import ProtectedRoute from "./components/ProtectedRoute";
 import "./index.css";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { Toaster } from "./components/ui/sonner";
 
 const queryClient = new QueryClient();
 
 export function App() {
   return (
     <QueryClientProvider client={queryClient}>
+      <Toaster richColors position="top-center" />
       <BrowserRouter>
         <div className="min-h-screen bg-neutral-950 text-neutral-100 flex flex-col font-sans antialiased">
           <AppBar />

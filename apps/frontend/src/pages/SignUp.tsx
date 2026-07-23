@@ -14,6 +14,7 @@ import { TrainFront } from "lucide-react";
 import { BACKEND_URL } from "@/config";
 import axios from "axios";
 import { useMutation } from "@tanstack/react-query";
+import { toast } from "sonner";
 
 async function signup({ username, password }: { username: string; password: string }) {
   const response = await axios.post(`${BACKEND_URL}/api/v1/signup`, {
@@ -27,32 +28,32 @@ export function SignUp() {
   const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState<string | null>(null);
 
   const mutation = useMutation({
     mutationFn: signup,
     onSuccess: () => {
+      toast.success("Account created successfully! Please sign in.");
       navigate("/signin");
     },
     onError: (err: any) => {
-      setError(err.response?.data?.error || err.message || "Failed to sign up");
+      const message = err.response?.data?.error || err.message || "Failed to sign up";
+      toast.error(message);
     },
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError(null);
 
     if (username.length < 3 || username.length > 20) {
-      setError("Username must be between 3 and 20 characters.");
+      toast.error("Username must be between 3 and 20 characters.");
       return;
     }
     if (password.length < 8) {
-      setError("Password must be at least 8 characters long.");
+      toast.error("Password must be at least 8 characters long.");
       return;
     }
 
-    await mutation.mutateAsync({ username, password });
+    mutation.mutate({ username, password });
   };
 
   return (
@@ -89,11 +90,7 @@ export function SignUp() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            {error && (
-              <div className="bg-red-500/10 border border-red-500/20 text-red-500 rounded-md p-3 text-xs mb-4">
-                {error}
-              </div>
-            )}
+
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-2">
                 <Label htmlFor="username" className="text-sm font-semibold text-neutral-300">

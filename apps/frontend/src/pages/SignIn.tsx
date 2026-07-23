@@ -14,6 +14,8 @@ import { TrainFront } from "lucide-react";
 import axios from "axios";
 import { BACKEND_URL } from "@/config";
 import { useMutation } from "@tanstack/react-query";
+import { toast } from "sonner";
+
 
 async function signin({
   username,
@@ -33,7 +35,6 @@ export function SignIn() {
   const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState<string | null>(null);
 
   const mutation = useMutation({
     mutationFn: signin,
@@ -41,24 +42,28 @@ export function SignIn() {
       if (data?.token) {
         localStorage.setItem("token", data.token);
       }
+      toast.success("Welcome back! Signed in successfully.");
       navigate("/dashboard");
+    },
+    onError: (err: any) => {
+      const message = err.response?.data?.error || err.message || "Invalid username or password";
+      toast.error(message);
     },
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError(null);
 
     if (username.length < 3 || username.length > 20) {
-      setError("Username must be between 3 and 20 characters.");
+      toast.error("Username must be between 3 and 20 characters.");
       return;
     }
     if (password.length < 8) {
-      setError("Password must be at least 8 characters long.");
+      toast.error("Password must be at least 8 characters long.");
       return;
     }
 
-    await mutation.mutateAsync({ username, password });
+    mutation.mutate({ username, password });
   };
 
   return (
@@ -89,15 +94,10 @@ export function SignIn() {
               </Link>
             </div>
             <CardDescription className="text-neutral-450 text-sm">
-              Enter your username below to login to your account
+               Enter your username below to login to your account
             </CardDescription>
           </CardHeader>
           <CardContent>
-            {error && (
-              <div className="bg-red-500/10 border border-red-500/20 text-red-500 rounded-md p-3 text-xs mb-4">
-                {error}
-              </div>
-            )}
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-2">
                 <Label
@@ -150,12 +150,6 @@ export function SignIn() {
               >
                 {mutation.isPending ? "Logging in..." : "Login"}
               </Button>
-              {mutation.isError && (
-                <div className="bg-red-500/10 border border-red-500/20 text-red-500 rounded-md p-3 text-xs mb-4">
-                  {(mutation.error as any)?.response?.data?.error ||
-                    "Invalid username or password"}
-                </div>
-              )}
             </form>
           </CardContent>
         </Card>

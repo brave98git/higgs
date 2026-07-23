@@ -4,10 +4,18 @@ import { AvatarService } from "./service";
 
 const avatarService = new AvatarService();
 
-const avatar = new Elysia({ prefix: "/avatar" })
-  .post("/", async ({ body }) => {
-    return await avatarService.createAvatar(body.name, body.prompt);
+const avatar = new Elysia()
+  .get("/avatars", async () => {
+    return await avatarService.getAllAvatars();
+  })
+  .post("/avatar", async ({ body }) => {
+     return await avatarService.createAvatar(body.name, body.image);
+   }, {
+     body: AvatarModel.CreateAvatarSchema
+   })
+  .get("/avatar/:avatarID", async ({ params }) => {
+    return await avatarService.getAvatarById(params.avatarID);
   }, {
-    body: AvatarModel.CreateAvatarSchema
+    params: AvatarModel.GetAvatarSchema
   });
 export default avatar;

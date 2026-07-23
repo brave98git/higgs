@@ -36,6 +36,8 @@ model Avatar {
   id     String @id @default(uuid())
   userId String
   name   String
+  prompt String @default("")
+  createdAt DateTime @default(now())
   avatarImages AvatarImage[]
   avatarVideoReferences avatarVideoReferences[]
   user  User @relation(fields: [userId], references: [id])

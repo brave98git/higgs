@@ -40,7 +40,7 @@ export function Dashboard() {
             
             <div className="absolute -inset-px bg-gradient-to-r from-blue-600 to-indigo-600 rounded-2xl opacity-0 group-hover:opacity-100 blur-sm transition-opacity duration-500 -z-10" />
 
-            <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-neutral-950 border border-neutral-800 text-blue-400 group-hover:scale-110 group-hover:border-blue-500/30 transition-all duration-500">
+            <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-neutral-950 border border-neutral-800 text-white group-hover:text-blue-400 group-hover:scale-110 group-hover:border-blue-500/30 transition-all duration-500">
               <User className="h-7 w-7" />
             </div>
 
@@ -55,7 +55,7 @@ export function Dashboard() {
 
             <div className="mt-auto w-full pt-4 border-t border-neutral-800 text-xs text-neutral-500 flex items-center justify-between">
               <span>Multi-angle • High fidelity</span>
-              <span className="text-blue-400 font-bold group-hover:text-blue-300 group-hover:underline">Launch Suite →</span>
+              <span className="text-white font-bold group-hover:text-blue-400 group-hover:underline">Launch Suite →</span>
             </div>
           </button>
 
@@ -69,7 +69,7 @@ export function Dashboard() {
             
             <div className="absolute -inset-px bg-gradient-to-r from-blue-600 to-indigo-600 rounded-2xl opacity-0 group-hover:opacity-100 blur-sm transition-opacity duration-500 -z-10" />
 
-            <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-neutral-950 border border-neutral-800 text-blue-400 group-hover:scale-110 group-hover:border-blue-500/30 transition-all duration-500">
+            <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-neutral-950 border border-neutral-800 text-white group-hover:text-blue-400 group-hover:scale-110 group-hover:border-blue-500/30 transition-all duration-500">
               <Video className="h-7 w-7" />
             </div>
 
@@ -84,7 +84,7 @@ export function Dashboard() {
 
             <div className="mt-auto w-full pt-4 border-t border-neutral-800 text-xs text-neutral-500 flex items-center justify-between">
               <span>HD Video • Custom duration</span>
-              <span className="text-blue-400 font-bold group-hover:text-blue-300 group-hover:underline">Launch Suite →</span>
+              <span className="text-white font-bold group-hover:text-blue-400 group-hover:underline">Launch Suite →</span>
             </div>
           </button>
         </div>

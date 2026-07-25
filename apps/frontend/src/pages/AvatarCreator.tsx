@@ -93,11 +93,12 @@ export function AvatarCreator() {
 
               <div>
                 <Label htmlFor="url" className="text-sm font-semibold text-neutral-300">
-                  Avatar Image URL
+                  Avatar Image URL or Prompt
                 </Label>
                 <Input
                   id="url"
                   type="text"
+                  placeholder="Paste an image URL or describe the avatar..."
                   value={url}
                   onChange={(e) => setUrl(e.target.value)}
                   required
@@ -149,26 +150,33 @@ export function AvatarCreator() {
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                    {gen.imageUrls.map((url, index) => (
-                      <div key={index} className="group relative aspect-square rounded-lg border border-neutral-850 bg-neutral-950 overflow-hidden">
-                        <img
-                          src={url.startsWith("http") ? url : `${BACKEND_URL}${url}`}
-                          alt={`${gen.name} ${index + 1}`}
-                          className="w-full h-full object-cover"
-                        />
-                        <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 flex items-center justify-center">
-                          <a
-                            href={url}
-                            download={`${gen.name.replace(/\s+/g, "_")}_${index + 1}.png`}
-                            target="_blank"
-                            rel="noreferrer"
-                            className="p-2 bg-[#1D4ED8] text-white rounded-md"
-                          >
-                            <Download className="h-4 w-4" />
-                          </a>
+                    {gen.imageUrls.map((imageUrl, index) => {
+                      const resolvedUrl = imageUrl.startsWith("http") || imageUrl.startsWith("data:") 
+                        ? imageUrl 
+                        : imageUrl.startsWith("/") 
+                        ? `${BACKEND_URL}${imageUrl}`
+                        : `https://image.pollinations.ai/prompt/${encodeURIComponent(imageUrl)}`;
+                      return (
+                        <div key={index} className="group relative aspect-square rounded-lg border border-neutral-850 bg-neutral-950 overflow-hidden">
+                          <img
+                            src={resolvedUrl}
+                            alt={`${gen.name} ${index + 1}`}
+                            className="w-full h-full object-cover"
+                          />
+                          <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 flex items-center justify-center">
+                            <a
+                              href={resolvedUrl}
+                              download={`${gen.name.replace(/\s+/g, "_")}_${index + 1}.png`}
+                              target="_blank"
+                              rel="noreferrer"
+                              className="p-2 bg-[#1D4ED8] text-white rounded-md"
+                            >
+                              <Download className="h-4 w-4" />
+                            </a>
+                          </div>
                         </div>
-                      </div>
-                    ))}
+                      );
+                    })}
                   </div>
                 </div>
               ))

@@ -13,15 +13,15 @@ export async function fetchPollinationsVideo(
 ): Promise<Buffer> {
   const { prompt, width = 1920, height = 1080, seed, nologo = true } = options;
 
-  console.log(`[Pollinations] Fetching video for prompt: "${prompt}"...`);
+  console.log(`[Pollinations] Fetching video for prompt: "${prompt}" using model: nova-reel...`);
 
-  // Reliable CDN MP4 video source for playback
-  const sampleVideoUrl = "https://raw.githubusercontent.com/intel-iot-devkit/sample-videos/master/person-bicycle-car-detection.mp4";
+  const encodedPrompt = encodeURIComponent(prompt);
+  const videoUrl = `https://video.pollinations.ai/prompt/${encodedPrompt}?width=${width}&height=${height}&model=nova-reel`;
 
   try {
-    const response = await axios.get(sampleVideoUrl, {
+    const response = await axios.get(videoUrl, {
       responseType: "arraybuffer",
-      timeout: 60000,
+      timeout: 120000, // Video generation can take longer, increase timeout to 2 minutes
       headers: {
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
       },

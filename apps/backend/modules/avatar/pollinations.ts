@@ -13,7 +13,7 @@ export async function fetchPollinationsImage(
 ): Promise<Buffer> {
   const { prompt, width = 512, height = 512, seed, nologo = true } = options;
   const encodedPrompt = encodeURIComponent(prompt);
-  let url = `https://image.pollinations.ai/prompt/${encodedPrompt}?width=${width}&height=${height}&nologo=${nologo}`;
+  let url = `https://image.pollinations.ai/prompt/${encodedPrompt}?width=${width}&height=${height}&nologo=${nologo}&model=sana`;
   if (seed !== undefined) {
     url += `&seed=${seed}`;
   }
